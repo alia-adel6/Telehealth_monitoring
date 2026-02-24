@@ -21,7 +21,6 @@ void main() async {
 
   runApp(
     MultiProvider(
-      // استخدام MultiProvider لتوفير أكثر من مزود
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(
@@ -48,7 +47,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme, // استخدام الثيم الفاتح
       darkTheme: AppTheme.darkTheme, // استخدام الثيم الداكن
       builder: (context, child) {
-        ThemeHelper.setNavigationBarColor(context); // ✅ ضبط لون شريط التنقل
+        ThemeHelper.setNavigationBarColor(context);
         return child!;
       },
       locale: Provider.of<LocaleProvider>(context)
@@ -63,11 +62,13 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home:
-          // isFirstTime ?
-          FirebaseAuth.instance.currentUser != null
-              ? AddBedsScreen()
-              : LoginScreen(),
+      initialRoute:
+          FirebaseAuth.instance.currentUser != null ? '/addBeds' : '/login',
+
+      routes: {
+        '/login': (context) => LoginScreen(),
+        '/addBeds': (context) => AddBedsScreen(),
+      },
       //: AddBedsScreen(),
     );
   }

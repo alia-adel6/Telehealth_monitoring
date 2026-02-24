@@ -74,82 +74,84 @@ class _SettingsScreenState extends State<SettingsScreen> {
           color: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ////////////////الوضع الداكن
-            ThemeToggle(),
-            Divider(color: isDarkMode ? Colors.grey : Colors.black),
-            /////////////// اللغة
-            LanguageSelector(),
-            if (userRole == 'Doctor')
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ////////////////الوضع الداكن
+              ThemeToggle(),
               Divider(color: isDarkMode ? Colors.grey : Colors.black),
+              /////////////// اللغة
+              LanguageSelector(),
+              if (userRole == 'Doctor')
+                Divider(color: isDarkMode ? Colors.grey : Colors.black),
 
-            ///////////////////تخصيص عرض المرضى
+              ///////////////////تخصيص عرض المرضى
 
-            if (userRole == 'Doctor')
+              if (userRole == 'Doctor')
+                ListTile(
+                  leading: Icon(Icons.people,
+                      color: Theme.of(context).colorScheme.primary),
+                  title: Text(S.of(context).view_patients),
+                  onTap: () => PatientChoiceScreen(context), // فتح Dialog
+                ),
+              /////////////////// المرضى السابقين
+              Divider(color: isDarkMode ? Colors.grey : Colors.black),
               ListTile(
-                leading: Icon(Icons.people,
+                leading: Icon(Icons.history,
                     color: Theme.of(context).colorScheme.primary),
-                title: Text(S.of(context).view_patients),
-                onTap: () => PatientChoiceScreen(context), // فتح Dialog
+                title: Text(S.of(context).show_pre_patients),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PreviousPatientsScreen()), // ✅ الانتقال إلى شاشة المرضى السابقين
+                  );
+                },
               ),
-            /////////////////// المرضى السابقين
-            Divider(color: isDarkMode ? Colors.grey : Colors.black),
-            ListTile(
-              leading: Icon(Icons.history,
-                  color: Theme.of(context).colorScheme.primary),
-              title: Text(S.of(context).show_pre_patients),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          PreviousPatientsScreen()), // ✅ الانتقال إلى شاشة المرضى السابقين
-                );
-              },
-            ),
-            ////////////////// المساعد الذكي
-            Divider(color: isDarkMode ? Colors.grey : Colors.black),
-            ListTile(
-              leading: Icon(Icons.smart_toy,
-                  color: Theme.of(context).colorScheme.primary),
-              title: Text(S.of(context).smart_assistant),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AIChatScreen()),
-                );
-              },
-            ),
-            /////////////////////// حوول التطبيق
-            Divider(color: isDarkMode ? Colors.grey : Colors.black),
-            ListTile(
-              leading: Icon(Icons.info,
-                  color: Theme.of(context).colorScheme.primary),
-              title: Text(S.of(context).about_app),
-              onTap: () => showCustomAboutDialog(context),
-            ),
-            ////////////////////// تقييم التطبيق
-            Divider(color: isDarkMode ? Colors.grey : Colors.black),
-            ListTile(
-              leading: Icon(Icons.star_rate,
-                  color: Theme.of(context).colorScheme.primary),
-              title: Text(S.of(context).rate_app),
-              subtitle: Text(
-                  "${S.of(context).average_rating}: ${averageRating.toStringAsFixed(1)}"),
-              onTap: () => showRatingDialog(context, updateAverageRating),
-            ),
-            //////////////////////////// تسجيل الخروج
-            Divider(color: isDarkMode ? Colors.grey : Colors.black),
-            ListTile(
-                leading: Icon(Icons.exit_to_app,
+              ////////////////// المساعد الذكي
+              Divider(color: isDarkMode ? Colors.grey : Colors.black),
+              ListTile(
+                leading: Icon(Icons.smart_toy,
                     color: Theme.of(context).colorScheme.primary),
-                title: Text(S.of(context).logout),
-                onTap: () => LogOut.confirmSignOut(context)),
-          ],
+                title: Text(S.of(context).smart_assistant),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AIChatScreen()),
+                  );
+                },
+              ),
+              /////////////////////// حوول التطبيق
+              Divider(color: isDarkMode ? Colors.grey : Colors.black),
+              ListTile(
+                leading: Icon(Icons.info,
+                    color: Theme.of(context).colorScheme.primary),
+                title: Text(S.of(context).about_app),
+                onTap: () => showCustomAboutDialog(context),
+              ),
+              ////////////////////// تقييم التطبيق
+              Divider(color: isDarkMode ? Colors.grey : Colors.black),
+              ListTile(
+                leading: Icon(Icons.star_rate,
+                    color: Theme.of(context).colorScheme.primary),
+                title: Text(S.of(context).rate_app),
+                subtitle: Text(
+                    "${S.of(context).average_rating}: ${averageRating.toStringAsFixed(1)}"),
+                onTap: () => showRatingDialog(context, updateAverageRating),
+              ),
+              //////////////////////////// تسجيل الخروج
+              Divider(color: isDarkMode ? Colors.grey : Colors.black),
+              ListTile(
+                  leading: Icon(Icons.exit_to_app,
+                      color: Theme.of(context).colorScheme.primary),
+                  title: Text(S.of(context).logout),
+                  onTap: () => LogOut.confirmSignOut(context)),
+            ],
+          ),
         ),
       ),
     );

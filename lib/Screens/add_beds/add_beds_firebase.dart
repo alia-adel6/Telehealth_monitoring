@@ -23,18 +23,16 @@ class FirebaseService {
         .doc('counter')
         .get();
     int currentCounter =
-        counterSnapshot.exists ? counterSnapshot['patientId'] : 0;
-
+        counterSnapshot.exists && counterSnapshot.data() != null
+            ? (counterSnapshot['patientId'] ?? 0)
+            : 0;
     // زيادة العداد للحصول على id تصاعدي جديد
     int newPatientId = currentCounter + 1;
 
     // تحديث العداد في Firebase ليكون الرقم التالي
-    await FirebaseFirestore.instance
-        .collection('settings')
-        .doc('counter')
-        .update({
+    await FirebaseFirestore.instance.collection('settings').doc('counter').set({
       'patientId': newPatientId,
-    });
+    }, SetOptions(merge: true));
 
     FirebaseFirestore.instance.collection('beds').add({
       'patientId': newPatientId,

@@ -88,10 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
         String roleInFirestore = userDoc["Role"] ?? "";
 
         if (roleInFirestore == _selectedRole) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AddBedsScreen()),
-          );
+          Navigator.pushReplacementNamed(context, '/addBeds');
         } else {
           await _auth.signOut();
           setState(() {
@@ -284,8 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
           .signInWithEmailAndPassword(email: email, password: password);
 
       // الانتقال إلى الصفحة الرئيسية بعد تسجيل الدخول
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => AddBedsScreen()));
+      Navigator.pushReplacementNamed(context, '/addBeds');
     } catch (e) {}
   }
 }

@@ -42,10 +42,7 @@ class LogOut {
       // التأكد من أن `context` ما زال متاحًا قبل التنقل
       if (!context.mounted) return;
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
+      Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
       print("Error signing out: $e");
 

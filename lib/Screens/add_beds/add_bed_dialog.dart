@@ -15,6 +15,7 @@ class _AddBedDialogState extends State<AddBedDialog> {
   List<String> doctorNames = []; // قائمة بأسماء الأطباء
   String? selectedDoctor; // الطبيب المختار
   final FirebaseService _firebaseService = FirebaseService(); // استدعاء الخدمة
+  String? bedNumberErrorText;
 
   @override
   void initState() {
@@ -58,8 +59,15 @@ class _AddBedDialogState extends State<AddBedDialog> {
                 label: S.of(context).bed_number,
                 controller: bedNumberController,
                 keyboardType: TextInputType.number,
-                validator: (value) =>
-                    value!.isEmpty ? S.of(context).please_bed_number : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return S.of(context).please_bed_number;
+                  }
+                  if (bedNumberErrorText != null) {
+                    return bedNumberErrorText;
+                  }
+                  return null;
+                },
                 context: context,
               ),
               buildTextField(
@@ -131,6 +139,21 @@ class _AddBedDialogState extends State<AddBedDialog> {
                     backgroundColor: Theme.of(context).colorScheme.error,
                   ),
                 );
+                return;
+              }
+              // التحقق من تكرار رقم السرير
+              final existingBed = await FirebaseFirestore.instance
+                  .collection('beds')
+                  .where('bedNumber',
+                      isEqualTo: bedNumberController.text.trim())
+                  .get();
+
+              if (existingBed.docs.isNotEmpty) {
+                setState(() {
+                  bedNumberErrorText = S.of(context).bed_exists;
+                });
+                // إعادة التحقق لتحديث الـ validator
+                _formKey.currentState!.validate();
                 return;
               }
 
