@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:t_h_m/Constants/colors.dart';
 import 'package:t_h_m/Screens/add_beds/add_beds_screen.dart';
 
@@ -203,9 +204,24 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text(
-          "Login to THM",
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+        title: Row(
+          children: [
+            Image.asset(
+              "assets/images/logo.png",
+              height: 30,
+              width: 30,
+              color: AppColors.AlertDialogColor,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                "Login to TeleHealth Monitoring",
+                style: TextStyle(
+                    color: AppColors.AlertDialogColor,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
         ),
         backgroundColor: AppColors.darkPrimaryColor,
         iconTheme: IconThemeData(
@@ -217,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [AppColors.darkPrimaryColor, AppColors.primaryColor],
+                colors: [AppColors.AlertDialogColor, AppColors.primaryColor],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -234,10 +250,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 10),
-                    Image.asset(
-                      "assets/images/logo.png",
-                      height: 150,
-                      width: 150,
+                    Lottie.asset(
+                      "assets/animations/doctor.json",
+                      height: 300,
+                      width: 300,
                     ),
                     const SizedBox(height: 30),
                     _buildTextField("Email", _emailController, _emailError),
